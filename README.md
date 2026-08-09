@@ -18,6 +18,11 @@
 点击"下载 APK"把安装包保存到手机 → 打开安装包 → 允许"安装未知来源应用"→ 安装完成。
 要求 Android 7.0（API 24）及以上；安装包约 57 KB。
 
+备用直连（下载按钮不可用时）：
+
+- [GitHub Release 直链](https://github.com/Trek-ai/photographer-portfolio-android/releases/latest/download/frameimage-release.apk)
+- [Raw 直连](https://raw.githubusercontent.com/Trek-ai/photographer-portfolio-android/main/frameimage-release.apk)
+
 ## 技术说明
 
 - 纯 Android 原生 Java 实现，零第三方依赖
