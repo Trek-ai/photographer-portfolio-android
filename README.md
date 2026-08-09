@@ -32,10 +32,10 @@
 
 ## 版本记录
 
-| 版本 | 说明 | 日期 |
-| --- | --- | --- |
-| v1.1 | 系列重命名、封面自选 | 2026-08 |
-| v1.0 | 首个版本：系列分类、相册导入、全屏看图 | 2026-08 |
+| 版本 | 说明 | 日期 | 下载 |
+| --- | --- | --- | --- |
+| v1.1 | 系列重命名、封面自选 | 2026-08 | [下载](https://github.com/Trek-ai/photographer-portfolio-android/releases/download/v1.1/frameimage-release.apk) |
+| v1.0 | 首个版本：系列分类、相册导入、全屏看图 | 2026-08 | [下载](https://github.com/Trek-ai/photographer-portfolio-android/releases/download/v1.0/frameimage-release.apk) |
 
 ## 仓库内容
 
