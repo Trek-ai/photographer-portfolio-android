@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>帧像 · 摄影师作品集 App（Photographer Portfolio Android）免费 APK 下载</title>
+<meta name="description" content="帧像是一款为摄影师打造的作品展示 Android App：按系列分类、全屏看图、手机相册导入，完全离线无广告。Photographer portfolio gallery app for Android，免费 APK 下载。">
+<meta name="keywords" content="摄影师,作品集,摄影,相册,作品展示,Android,APK,photographer,portfolio,gallery,photography">
+<style>
+  :root {
+    --bg: #FAF8F5;
+    --surface: #FFFFFF;
+    --ink: #1F1F1F;
+    --ink-soft: #6B6661;
+    --muted: #8A8580;
+    --accent: #B08D57;
+    --accent-deep: #96733F;
+    --line: #E8E2DA;
+    --shadow: 0 10px 30px rgba(31, 31, 31, 0.07);
+    --radius: 16px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: -apple-system, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+  .serif { font-family: Georgia, "Songti SC", "SimSun", serif; }
+
+  a { color: var(--accent-deep); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* ---------- 顶部导航 ---------- */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    padding: 12px 6vw;
+    background: rgba(250, 248, 245, 0.92);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .brand:hover { text-decoration: none; }
+  .brand svg { width: 28px; height: 28px; }
+  .nav-links { display: flex; gap: 22px; margin-left: auto; }
+  .nav-links a { color: var(--ink-soft); font-size: 14px; }
+  .nav-links a:hover { color: var(--accent-deep); text-decoration: none; }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    text-align: center;
+    padding: 84px 6vw 72px;
+    background:
+      radial-gradient(1200px 500px at 50% -10%, #F4EDE2 0%, rgba(244, 237, 226, 0) 60%),
+      var(--bg);
+  }
+  .hero .app-logo {
+    width: 104px;
+    height: 104px;
+    border-radius: 26px;
+    box-shadow: var(--shadow);
+    margin: 0 auto 26px;
+    display: block;
+  }
+  .hero h1 {
+    font-size: clamp(44px, 8vw, 64px);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+  }
+  .hero .tagline {
+    margin-top: 10px;
+    font-size: 15px;
+    letter-spacing: 0.32em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+  .hero .intro {
+    max-width: 620px;
+    margin: 18px auto 0;
+    color: var(--ink-soft);
+    font-size: 16px;
+  }
+  .hero .badges {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 24px;
+  }
+  .badge {
+    border: 1px solid var(--line);
+    background: var(--surface);
+    border-radius: 999px;
+    padding: 6px 16px;
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+  .btn {
+    display: inline-block;
+    background: var(--accent);
+    color: #fff;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 14px 34px;
+    border-radius: 999px;
+    box-shadow: 0 8px 22px rgba(176, 141, 87, 0.35);
+    transition: transform 0.15s ease, background 0.15s ease;
+  }
+  .btn:hover { background: var(--accent-deep); text-decoration: none; transform: translateY(-2px); }
+  .hero .btn { margin-top: 34px; }
+  .hero .file-note { margin-top: 12px; font-size: 13px; color: var(--muted); }
+
+  /* ---------- 通用区块 ---------- */
+  section { padding: 68px 6vw; }
+  section + section { border-top: 1px solid var(--line); }
+  .section-head { text-align: center; margin-bottom: 40px; }
+  .section-head .kicker {
+    font-size: 12px;
+    letter-spacing: 0.28em;
+    color: var(--accent);
+    text-transform: uppercase;
+  }
+  .section-head h2 {
+    font-size: clamp(28px, 4.5vw, 38px);
+    margin-top: 6px;
+  }
+  .section-head p { color: var(--muted); margin-top: 8px; font-size: 15px; }
+
+  /* ---------- 功能卡片 ---------- */
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 20px;
+    max-width: 1060px;
+    margin: 0 auto;
+  }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 28px 24px;
+    box-shadow: var(--shadow);
+  }
+  .card .icon {
+    width: 46px;
+    height: 46px;
+    border-radius: 13px;
+    background: #F3EDE2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    margin-bottom: 16px;
+  }
+  .card h3 { font-size: 18px; margin-bottom: 6px; }
+  .card p { font-size: 14px; color: var(--ink-soft); }
+
+  /* ---------- 界面手机模型 ---------- */
+  .phones {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 42px 30px;
+    max-width: 1060px;
+    margin: 0 auto;
+    justify-items: center;
+  }
+  .phone-wrap { text-align: center; }
+  .phone-wrap figcaption { margin-top: 14px; font-size: 14px; color: var(--ink-soft); }
+  .phone-wrap figcaption b { display: block; color: var(--ink); font-weight: 600; }
+  .phone {
+    width: 250px;
+    height: 520px;
+    background: #1F1F1F;
+    border-radius: 38px;
+    padding: 11px;
+    box-shadow: var(--shadow);
+    margin: 0 auto;
+  }
+  .screen {
+    width: 100%;
+    height: 100%;
+    border-radius: 28px;
+    overflow: hidden;
+    background: #FAF8F5;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+  .screen .status {
+    height: 22px;
+    background: #FAF8F5;
+    flex: 0 0 auto;
+  }
+  .mock-header {
+    display: flex;
+    align-items: center;
+    padding: 10px 14px 8px;
+    border-bottom: 1px solid var(--line);
+    background: #FAF8F5;
+  }
+  .mock-header .title { font-family: Georgia, serif; font-weight: 700; font-size: 13px; flex: 1; }
+  .mock-header .add { color: var(--accent); font-size: 11px; }
+  .mock-header .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--muted); margin-right: 8px; }
+  .mock-grid {
+    flex: 1;
+    display: grid;
+    gap: 8px;
+    padding: 12px;
+    align-content: start;
+  }
+  .mock-grid.two { grid-template-columns: 1fr 1fr; }
+  .mock-grid.three { grid-template-columns: repeat(3, 1fr); }
+  .ph {
+    border-radius: 8px;
+    position: relative;
+    overflow: hidden;
+    min-height: 78px;
+  }
+  .ph.tall { min-height: 132px; }
+  .ph.p1 { background: linear-gradient(135deg, #E4D5BE, #C3A98B); }
+  .ph.p2 { background: linear-gradient(135deg, #CFD8CC, #93A68F); }
+  .ph.p3 { background: linear-gradient(135deg, #D8C9CF, #A98D9B); }
+  .ph.p4 { background: linear-gradient(135deg, #CBD6DC, #8FA7B2); }
+  .ph.p5 { background: linear-gradient(135deg, #E0D3C0, #B39B78); }
+  .ph.p6 { background: linear-gradient(135deg, #D4CFC4, #9B948A); }
+  .ph .tag {
+    position: absolute;
+    left: 6px;
+    bottom: 6px;
+    background: rgba(31, 31, 31, 0.55);
+    color: #fff;
+    font-size: 9px;
+    padding: 1px 7px;
+    border-radius: 999px;
+  }
+  .screen.dark { background: #111111; }
+  .screen.dark .status { background: #111111; }
+  .screen.dark .mock-header { background: rgba(0,0,0,0.7); border-bottom: none; }
+  .screen.dark .mock-header .title { color: #fff; }
+  .screen.dark .mock-header .dot { background: #fff; }
+  .full-photo {
+    flex: 1;
+    margin: 10px;
+    border-radius: 10px;
+    background: linear-gradient(150deg, #E7DCCB, #B9A283);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+  .full-photo .zoom-hint {
+    background: rgba(31,31,31,0.65);
+    color: #fff;
+    font-size: 11px;
+    padding: 5px 12px;
+    border-radius: 999px;
+    letter-spacing: 0.1em;
+  }
+  .mock-bottom {
+    display: flex;
+    justify-content: center;
+    gap: 26px;
+    align-items: center;
+    padding: 10px 0 12px;
+    background: rgba(0,0,0,0.7);
+    color: #fff;
+    font-size: 11px;
+  }
+  .mock-bottom .count { letter-spacing: 0.08em; }
+
+  /* ---------- 步骤 ---------- */
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 18px;
+    max-width: 1060px;
+    margin: 0 auto 36px;
+  }
+  .step {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 24px 22px;
+  }
+  .step .num {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 14px;
+  }
+  .step h3 { font-size: 16px; margin-bottom: 6px; }
+  .step p { font-size: 14px; color: var(--ink-soft); }
+  .center { text-align: center; }
+
+  /* ---------- 说明清单 ---------- */
+  .notes {
+    max-width: 760px;
+    margin: 0 auto;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 30px 34px;
+    box-shadow: var(--shadow);
+  }
+  .notes li {
+    list-style: none;
+    padding: 10px 0 10px 30px;
+    position: relative;
+    font-size: 15px;
+    color: var(--ink-soft);
+    border-bottom: 1px dashed var(--line);
+  }
+  .notes li:last-child { border-bottom: none; }
+  .notes li::before {
+    content: "";
+    position: absolute;
+    left: 2px;
+    top: 19px;
+    width: 10px;
+    height: 10px;
+    border: 2px solid var(--accent);
+    border-radius: 50%;
+  }
+  .notes b { color: var(--ink); }
+
+  /* ---------- 页脚 ---------- */
+  footer {
+    text-align: center;
+    padding: 44px 6vw 50px;
+    border-top: 1px solid var(--line);
+    color: var(--muted);
+    font-size: 13px;
+  }
+  footer .brand { justify-content: center; margin-bottom: 10px; font-size: 16px; }
+  footer .en { letter-spacing: 0.28em; text-transform: uppercase; font-size: 11px; }
+
+  /* ---------- 滚动显现 ---------- */
+  .reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  @media (max-width: 640px) {
+    .nav-links { display: none; }
+    section { padding: 52px 5vw; }
+    .hero { padding: 60px 5vw 54px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="brand" href="#top">
+    <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="lg" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#FDFBF8"/><stop offset="1" stop-color="#F2EBE0"/>
+        </linearGradient>
+      </defs>
+      <rect width="1024" height="1024" fill="url(#lg)"/>
+      <rect x="195" y="195" width="634" height="634" rx="115" fill="none" stroke="#B08D57" stroke-width="36"/>
+      <circle cx="600" cy="600" r="78" fill="#C9A86A"/>
+    </svg>
+    帧像
+  </a>
+  <div class="nav-links">
+    <a href="#features">功能</a>
+    <a href="#screens">界面</a>
+    <a href="#install">安装</a>
+    <a href="#usage">使用</a>
+    <a href="#privacy">隐私</a>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <svg class="app-logo" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="帧像图标">
+    <rect width="1024" height="1024" fill="#F2EBE0"/>
+    <rect x="195" y="195" width="634" height="634" rx="115" fill="none" stroke="#B08D57" stroke-width="36"/>
+    <circle cx="600" cy="600" r="78" fill="#C9A86A"/>
+  </svg>
+  <h1 class="serif">帧像</h1>
+  <p class="tagline">Photo Portfolio</p>
+  <p class="intro">为摄影师朋友打造的作品展示 App。按系列整理作品，全屏看图可双指缩放，
+    照片从手机相册导入，完全离线、无广告、无账号、无需任何权限。</p>
+  <div class="badges">
+    <span class="badge">Android 7.0+</span>
+    <span class="badge">完全离线</span>
+    <span class="badge">零权限</span>
+    <span class="badge">安装包仅 50 KB</span>
+  </div>
+  <div>
+    <a class="btn" href="frameimage-release.apk" download="帧像-v1.0-release.apk">下载 APK 安装包</a>
+  </div>
+  <p class="file-note">点击下载 → 从通知栏或下载列表点开 → 允许"未知来源应用"即可安装</p>
+</header>
+
+<section id="features">
+  <div class="section-head">
+    <p class="kicker">Features</p>
+    <h2 class="serif">为展示作品而生</h2>
+    <p>四个核心能力，每一处都围绕"给客户看作品"这件小事设计。</p>
+  </div>
+  <div class="cards">
+    <div class="card reveal">
+      <div class="icon">▦</div>
+      <h3>按系列分类</h3>
+      <p>人像、风光、街拍……每个系列一张封面、一个名字，首页一目了然，像一本画册。</p>
+    </div>
+    <div class="card reveal">
+      <div class="icon">⌗</div>
+      <h3>全屏看图</h3>
+      <p>双指缩放细节、双击快速放大、左右滑动切换，把照片最完整地呈现给观众。</p>
+    </div>
+    <div class="card reveal">
+      <div class="icon">✛</div>
+      <h3>手机相册导入</h3>
+      <p>从相册多选照片一键加入，随时更新作品，不用电脑、不用联网、不用上传。</p>
+    </div>
+    <div class="card reveal">
+      <div class="icon">◌</div>
+      <h3>干净与隐私</h3>
+      <p>零第三方依赖、无广告无追踪；照片只存在手机本地，卸载即彻底消失。</p>
+    </div>
+  </div>
+</section>
+
+<section id="screens">
+  <div class="section-head">
+    <p class="kicker">Screens</p>
+    <h2 class="serif">界面预览</h2>
+    <p>明亮杂志风：米白底、大留白、暖铜点缀，把注意力留给照片本身。</p>
+  </div>
+  <div class="phones">
+    <figure class="phone-wrap reveal">
+      <div class="phone">
+        <div class="screen">
+          <div class="status"></div>
+          <div class="mock-header">
+            <div class="dot"></div>
+            <div class="title">帧像</div>
+            <div class="add">添加作品</div>
+          </div>
+          <div class="mock-grid two">
+            <div class="ph tall p1"><span class="tag">人像 · 12</span></div>
+            <div class="ph tall p2"><span class="tag">风光 · 8</span></div>
+            <div class="ph tall p3"><span class="tag">街拍 · 6</span></div>
+            <div class="ph tall p4"><span class="tag">静物 · 5</span></div>
+          </div>
+        </div>
+      </div>
+      <figcaption><b>首页 · 系列</b>封面 + 名称 + 张数</figcaption>
+    </figure>
+
+    <figure class="phone-wrap reveal">
+      <div class="phone">
+        <div class="screen">
+          <div class="status"></div>
+          <div class="mock-header">
+            <div class="dot"></div>
+            <div class="title">人像</div>
+            <div class="add">添加作品</div>
+          </div>
+          <div class="mock-grid three">
+            <div class="ph p1"></div>
+            <div class="ph p2"></div>
+            <div class="ph p3"></div>
+            <div class="ph p4"></div>
+            <div class="ph p5"></div>
+            <div class="ph p6"></div>
+            <div class="ph p3"></div>
+            <div class="ph p1"></div>
+            <div class="ph p2"></div>
+          </div>
+        </div>
+      </div>
+      <figcaption><b>系列内 · 作品墙</b>长按可删除，点击看大图</figcaption>
+    </figure>
+
+    <figure class="phone-wrap reveal">
+      <div class="phone">
+        <div class="screen dark">
+          <div class="status"></div>
+          <div class="mock-header">
+            <div class="dot"></div>
+            <div class="title">人像</div>
+            <div class="add">✕</div>
+          </div>
+          <div class="full-photo">
+            <span class="zoom-hint">双指缩放</span>
+          </div>
+          <div class="mock-bottom">
+            <span>‹</span>
+            <span class="count">3 / 12</span>
+            <span>›</span>
+          </div>
+        </div>
+      </div>
+      <figcaption><b>全屏看图</b>缩放 · 滑动 · 删除</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section id="install">
+  <div class="section-head">
+    <p class="kicker">Install</p>
+    <h2 class="serif">三步装好</h2>
+    <p>不需要电脑，不需要数据线，一台手机就够了。</p>
+  </div>
+  <div class="steps">
+    <div class="step reveal">
+      <div class="num">1</div>
+      <h3>下载 APK</h3>
+      <p>点击页面上的"下载 APK"按钮，安装包会自动保存到手机下载目录。</p>
+    </div>
+    <div class="step reveal">
+      <div class="num">2</div>
+      <h3>点击安装</h3>
+      <p>点开 APK 文件，系统会提示"允许安装未知来源应用"，按提示允许即可。</p>
+    </div>
+    <div class="step reveal">
+      <div class="num">3</div>
+      <h3>打开「帧像」</h3>
+      <p>从桌面图标进入，点"添加作品"从相册选照片，作品集就建好了。</p>
+    </div>
+  </div>
+  <p class="center">
+    <a class="btn" href="frameimage-release.apk" download="帧像-v1.0-release.apk">下载 APK（约 50 KB）</a>
+  </p>
+</section>
+
+<section id="usage">
+  <div class="section-head">
+    <p class="kicker">How to Use</p>
+    <h2 class="serif">日常使用</h2>
+    <p>两个入口，一个习惯：随时把新作品放进对应的系列。</p>
+  </div>
+  <div class="cards">
+    <div class="card reveal">
+      <h3>添加作品</h3>
+      <p>首页点"添加作品"→ 新建系列（如"人像"）或加入已有系列 → 在相册里多选照片，一次可加最多 50 张。</p>
+    </div>
+    <div class="card reveal">
+      <h3>展示作品</h3>
+      <p>点系列进作品墙，点任意照片全屏观看。双指缩放看细节，左右滑动翻页，单击隐藏界面，把手机递给客户即可。</p>
+    </div>
+    <div class="card reveal">
+      <h3>整理作品</h3>
+      <p>长按照片可删除；长按首页系列卡片可删除整个系列。所有删除都有二次确认，不怕手滑。</p>
+    </div>
+    <div class="card reveal">
+      <h3>改版与升级</h3>
+      <p>名字、图标、配色、功能都可以再定制；更新版本用同一个安装包签名，直接在原 App 上升级即可。</p>
+    </div>
+  </div>
+</section>
+
+<section id="privacy">
+  <div class="section-head">
+    <p class="kicker">Privacy & Tech</p>
+    <h2 class="serif">技术说明</h2>
+    <p>做得越简单，越让人放心。</p>
+  </div>
+  <ul class="notes reveal">
+    <li><b>零权限</b>：不申请存储、网络、定位等任何权限，系统相册选择器是唯一入口。</li>
+    <li><b>零联网</b>：没有账号、没有云同步、没有统计上报，断网也能完整使用。</li>
+    <li><b>照片在本地</b>：导入的照片复制进 App 私有目录，删除 App 或换手机后不保留。</li>
+    <li><b>零第三方依赖</b>：全部使用手机系统自带组件，安装包仅 50 KB，占用内存极小。</li>
+    <li><b>兼容性</b>：Android 7.0（2016 年）及以上的手机均可安装。</li>
+  </ul>
+</section>
+
+<footer>
+  <div class="brand">
+    <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" style="width:22px;height:22px">
+      <rect width="1024" height="1024" fill="#F2EBE0"/>
+      <rect x="195" y="195" width="634" height="634" rx="115" fill="none" stroke="#B08D57" stroke-width="36"/>
+      <circle cx="600" cy="600" r="78" fill="#C9A86A"/>
+    </svg>
+    帧像
+  </div>
+  <p class="en">Frame Image · Photo Portfolio</p>
+  <p style="margin-top:10px">为摄影师朋友制作 · 2026</p>
+</footer>
+
+<script>
+  // 滚动显现动画：进入视口时添加 visible 类。
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("visible");
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
+</script>
+</body>
+</html>
